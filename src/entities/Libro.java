@@ -1,5 +1,6 @@
 package entities;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-//@DiscriminatorValue("Libro")
+@DiscriminatorValue("Libro")
 @Table(name = "libri")
 @Getter
 @Setter

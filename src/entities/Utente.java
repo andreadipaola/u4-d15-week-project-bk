@@ -22,6 +22,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Utente {
 	@Id
+//	@GeneratedValue
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long numeroTessera;
 	private String nome;
