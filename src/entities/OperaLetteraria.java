@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +20,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "opera_letteraria")
 @Inheritance(strategy = InheritanceType.JOINED)
-//@DiscriminatorColumn(name = "categoria", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "categoria", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 @NoArgsConstructor

@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 public class Prestito {
 
 	@Id
+//	@GeneratedValue
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name = "utente")
