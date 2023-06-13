@@ -1,10 +1,12 @@
 package dao;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import entities.Prestito;
 import lombok.extern.slf4j.Slf4j;
@@ -22,33 +24,33 @@ public class PrestitoDao {
 		transaction.begin();
 		entityManager.persist(prestito);
 		transaction.commit();
-		System.out.println("Elemento salvato correttamente!");
+		log.info("Prestito salvato correttamente!");
 	}
 
-	public void ottieniPrestitiDaUtente(long utente) {
-//		OperaLetteraria operaTrovata = entityManager.find(OperaLetteraria.class, anno);
+	public void ottieniPrestitiDaUtente(UUID numeroTessera) {
 		try {
-			Query query = entityManager.createNamedQuery("cercaPrestitiDaUtente");
-			query.setParameter("utente", utente);
+			TypedQuery<Prestito> query = entityManager.createNamedQuery("cercaPrestitiDaUtente", Prestito.class);
+			query.setParameter("utente", numeroTessera);
 
 			List<Prestito> risultato = query.getResultList();
 
 			System.out.println("Ricerca elementi per tessera utente:");
 
 			if (risultato.isEmpty()) {
-				log.error("Ci dispiace non abbiamo trovato alcun elemento in quell'anno.");
+				log.error("Ci dispiace non abbiamo trovato alcun prestito associato a questo numero di tessera.");
 			} else {
 				for (Prestito prestito : risultato) {
-					System.out.println(prestito);
+					log.info(prestito.toString());
 				}
 			}
 		} catch (Exception e) {
-			log.error("ATTENZIONE!!! C'è stato un errore.");
+			log.error(
+					"ATTENZIONE!!! C'è stato un errore nel reperire i prestiti effettuati dall'utente con tessera numero: "
+							+ numeroTessera + ".");
 		}
 	}
 
 	public void ottieniPrestitiScaduti() {
-//		OperaLetteraria operaTrovata = entityManager.find(OperaLetteraria.class, anno);
 		try {
 			Query query = entityManager.createNamedQuery("cercaPrestitiScaduti");
 
@@ -60,12 +62,18 @@ public class PrestitoDao {
 				log.error("Ci dispiace non abbiamo trovato alcun elemento in quell'anno.");
 			} else {
 				for (Prestito prestito : risultato) {
-					System.out.println(prestito);
+					log.info(prestito.toString());
 				}
 			}
 		} catch (Exception e) {
-			log.error("ATTENZIONE!!! C'è stato un errore.");
+			log.error("ATTENZIONE!!! C'è stato un errore nel reperire i prestiti non ancora restituiti.");
 		}
 	}
+
+//	private Utente ottieniUtenteByNumeroTessera(UUID numeroTessera) {
+//		Query query = entityManager.createQuery("SELECT u FROM Utente u WHERE u.numeroTessera = :numeroTessera");
+//		query.setParameter("numeroTessera", numeroTessera);
+//		return (Utente) query.getSingleResult();
+//	}
 
 }

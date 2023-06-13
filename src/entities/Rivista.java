@@ -1,6 +1,5 @@
 package entities;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@DiscriminatorValue("Rivista")
 @Table(name = "riviste")
 @Getter
 @Setter
@@ -28,8 +26,9 @@ public class Rivista extends OperaLetteraria {
 
 	@Override
 	public String toString() {
-		return "ISBN: " + getIsbn() + ", Titolo: " + getTitolo() + ", Anno di Pubblicazione: " + getAnnoPubblicazione()
-				+ ", Numero di Pagine = " + getNumeroPagine() + ", periodicità = " + periodicita + "(RIVISTA";
+		return "[RIVISTA] ISBN: " + getIsbn() + ", Titolo: " + getTitolo() + ", Anno di Pubblicazione: "
+				+ getAnnoPubblicazione() + ", Numero di Pagine = " + getNumeroPagine() + ", periodicità = "
+				+ periodicita + "(RIVISTA";
 	}
 
 }

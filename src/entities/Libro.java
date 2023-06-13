@@ -1,8 +1,6 @@
 package entities;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -10,12 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@DiscriminatorValue("Libro")
 @Table(name = "libri")
 @Getter
 @Setter
 @NoArgsConstructor
-@NamedQuery(name = "cercaPerAutore", query = "SELECT lib FROM Libro lib WHERE lib.autore = :autore")
+//@NamedQuery(name = "cercaPerAutore", query = "SELECT lib FROM Libro lib WHERE lib.autore = :autore")
 public class Libro extends OperaLetteraria {
 	private String autore;
 	private String genere;
@@ -28,9 +25,8 @@ public class Libro extends OperaLetteraria {
 
 	@Override
 	public String toString() {
-		return "LIBRO => ISBN: " + getIsbn() + ", Titolo: " + getTitolo() + ", autore: " + autore + ", genere: "
-				+ genere + ", Anno di Pubblicazione: " + getAnnoPubblicazione() + ", Numero di Pagine: "
-				+ getNumeroPagine();
+		return "[LIBRO] ISBN: " + getIsbn() + ", Titolo: " + getTitolo() + ", autore: " + autore + ", genere: " + genere
+				+ ", Anno di Pubblicazione: " + getAnnoPubblicazione() + ", Numero di Pagine: " + getNumeroPagine();
 	}
 
 }

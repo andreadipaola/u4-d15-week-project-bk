@@ -19,12 +19,3 @@ public class JpaUtil {
 		return entityManagerFactory;
 	}
 }
-
-//public class JpaUtil {
-//	private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("u4-d15-week-project-bk");
-//
-//	public static EntityManagerFactory getEntityManagerFactory() {
-//		return emf;
-//	}
-//
-//}

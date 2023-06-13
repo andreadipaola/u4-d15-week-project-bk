@@ -1,13 +1,18 @@
 package entities;
 
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -17,19 +22,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "prestiti")
 @Getter
 @NoArgsConstructor
-@NamedQuery(name = "cercaPrestitiPerUtente", query = "SELECT pre FROM Prestito pre WHERE pre.utente = :tessera AND pre.dataRestituzioneEffettiva IS NULL")
-@NamedQuery(name = "cercaPrestitiScaduti", query = "SELECT pre FROM Prestito pre WHERE pre.restituzioneEffettiva IS NULL AND pre.restituzionePrevista < CURRENT_DATE")
+@NamedQuery(name = "cercaPrestitiDaUtente", query = "SELECT p FROM Prestito p WHERE p.utente.numeroTessera = :utente AND p.dataRestituzioneEffettiva IS NULL")
+//@NamedQuery(name = "cercaPrestitiDaUtente", query = "SELECT p FROM Prestito p WHERE p.utente.numeroTessera = :utente")
+@NamedQuery(name = "cercaPrestitiScaduti", query = "SELECT p FROM Prestito p WHERE p.dataRestituzioneEffettiva IS NULL AND p.dataRestituzionePrevista < CURRENT_DATE")
 public class Prestito {
 
 	@Id
-//	@GeneratedValue
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@Column(name = "utente")
-	private long utente;
-
-	@Column(name = "elemento_prestato")
-	private OperaLetteraria elementoPrestato;
+	@GeneratedValue
+	@Column(name = "id_prestito")
+	private UUID idPrestito;
 
 	@Column(name = "data_inizio_prestito")
 	private LocalDate dataInizioPrestito;
@@ -40,24 +41,26 @@ public class Prestito {
 	@Column(name = "data_restituzione_effettiva")
 	private LocalDate dataRestituzioneEffettiva;
 
-	public LocalDate setRestituzionePrevista(LocalDate restituzionePrevista) {
-		return this.dataRestituzionePrevista = this.dataInizioPrestito.plusDays(30);
-	}
+	@ManyToOne
+	@JoinColumn(name = "id_utente")
+	private Utente utente;
 
-	public Prestito(long utente, OperaLetteraria elementoPrestato, LocalDate dataInizioPrestito,
-			LocalDate dataRestituzionePrevista, LocalDate dataRestituzioneEffettiva) {
-		super();
+	@OneToMany(mappedBy = "prestito", cascade = CascadeType.ALL)
+	private Set<OperaLetteraria> opereLetterarie;
+
+	public Prestito(Utente utente, Set<OperaLetteraria> opereLetterarie, LocalDate dataInizioPrestito,
+			LocalDate dataRestituzioneEffettiva) {
 		this.utente = utente;
-		this.elementoPrestato = elementoPrestato;
+		this.opereLetterarie = opereLetterarie;
 		this.dataInizioPrestito = dataInizioPrestito;
-		this.dataRestituzionePrevista = dataRestituzionePrevista;
+		this.dataRestituzionePrevista = dataInizioPrestito.plusDays(30);
 		this.dataRestituzioneEffettiva = dataRestituzioneEffettiva;
 	}
 
 	@Override
 	public String toString() {
-		return "PRESTITO => Id: " + id + ", Tessera utente: " + utente + ", Elemnto prelevato: " + elementoPrestato
-				+ ", Data prelievo:" + dataInizioPrestito + ", Data restituzione privista: " + dataRestituzionePrevista
+		return "[PRESTITO] Id: " + idPrestito + ", Tessera utente: " + utente.getNumeroTessera() + ", Data prelievo: "
+				+ dataInizioPrestito + ", Data restituzione privista: " + dataRestituzionePrevista
 				+ ", Data consegna effettiva: " + dataRestituzioneEffettiva;
 	}
 

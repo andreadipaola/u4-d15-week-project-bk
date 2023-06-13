@@ -1,12 +1,12 @@
 package dao;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
-import entities.Libro;
 import entities.OperaLetteraria;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,33 +23,35 @@ public class OperaLetterariaDao {
 		transaction.begin();
 		entityManager.persist(opera);
 		transaction.commit();
-		System.out.println("Elemento salvato correttamente!");
+		log.info("Opera salvata correttamente!");
 	}
 
-	public void ottieniOperaDaIsbn(long isbn) {
+	public void ottieniOperaDaIsbn(UUID isbn) {
 		OperaLetteraria operaTrovata = entityManager.find(OperaLetteraria.class, isbn);
+		System.out.println();
+		System.out.println("Ricerca elemento per ISBN:");
 		if (operaTrovata != null) {
-			System.out.println(operaTrovata);
+			log.info(operaTrovata.toString());
 		} else {
-			System.out.println("Ci dispiace ma l'elemento con ISBN " + isbn + " non è stato trovato");
+			log.info("Ci dispiace ma l'elemento con ISBN " + isbn + " non è stato trovato");
 		}
 	}
 
 	public void ottieniOperaDaAnno(int anno) {
-//		OperaLetteraria operaTrovata = entityManager.find(OperaLetteraria.class, anno);
 		try {
-			Query query = entityManager.createNamedQuery("cercaPerAnno");
+			TypedQuery<OperaLetteraria> query = entityManager.createNamedQuery("cercaPerAnno", OperaLetteraria.class);
+//			Query query = entityManager.createNamedQuery("cercaPerAnno");
 			query.setParameter("anno", anno);
 
 			List<OperaLetteraria> risultato = query.getResultList();
-
+			System.out.println();
 			System.out.println("Ricerca elemento per anno di Pubblicazione:");
 
 			if (risultato.isEmpty()) {
 				log.error("Ci dispiace non abbiamo trovato alcun elemento in quell'anno.");
 			} else {
 				for (OperaLetteraria opera : risultato) {
-					System.out.println(opera);
+					log.info(opera.toString());
 				}
 			}
 		} catch (Exception e) {
@@ -58,20 +60,20 @@ public class OperaLetterariaDao {
 	}
 
 	public void ottieniOperaDaAutore(String autore) {
-//		OperaLetteraria operaTrovata = entityManager.find(OperaLetteraria.class, anno);
 		try {
-			Query query = entityManager.createNamedQuery("cercaPerAutore");
-			query.setParameter("autore", autore);
+			TypedQuery<OperaLetteraria> query = entityManager.createNamedQuery("cercaPerAutore", OperaLetteraria.class);
+//			Query query = entityManager.createNamedQuery("cercaPerAutore");
+			query.setParameter("autore", "%" + autore.toLowerCase() + "%");
 
-			List<Libro> risultato = query.getResultList();
-
-			System.out.println("Ricerca elemento per autore:");
+			List<OperaLetteraria> risultato = query.getResultList();
+			System.out.println();
+			System.out.println("Ricerca elemento per autore o parte di esso:");
 
 			if (risultato.isEmpty()) {
-				log.error("Ci dispiace non abbiamo trovato alcun elemento in quell'anno.");
+				log.error("Ci dispiace non abbiamo trovato alcun elemento per questo autore.");
 			} else {
-				for (Libro libro : risultato) {
-					System.out.println(libro);
+				for (OperaLetteraria opera : risultato) {
+					log.info(opera.toString());
 				}
 			}
 		} catch (Exception e) {
@@ -80,20 +82,20 @@ public class OperaLetterariaDao {
 	}
 
 	public void ottieniOperaDaTitolo(String titolo) {
-//		OperaLetteraria operaTrovata = entityManager.find(OperaLetteraria.class, anno);
 		try {
-			Query query = entityManager.createNamedQuery("cercaPerTitolo");
-			query.setParameter("titolo", "%" + titolo + "%");
+			TypedQuery<OperaLetteraria> query = entityManager.createNamedQuery("cercaPerTitolo", OperaLetteraria.class);
+//			Query query = entityManager.createNamedQuery("cercaPerTitolo");
+			query.setParameter("titolo", "%" + titolo.toLowerCase() + "%");
 
 			List<OperaLetteraria> risultato = query.getResultList();
-
-			System.out.println("Ricerca elemento per titolo:");
+			System.out.println();
+			System.out.println("Ricerca elemento per titolo o parte di esso:");
 
 			if (risultato.isEmpty()) {
 				log.error("Ci dispiace non abbiamo trovato alcun elemento con questo titolo.");
 			} else {
 				for (OperaLetteraria elemento : risultato) {
-					System.out.println(elemento);
+					log.info(elemento.toString());
 				}
 			}
 		} catch (Exception e) {
@@ -101,16 +103,18 @@ public class OperaLetterariaDao {
 		}
 	}
 
-	public void ottieniOperaDaIsbnECancella(long isbn) {
+	public void ottieniOperaDaIsbnECancella(UUID isbn) {
 		OperaLetteraria operaTrovata = entityManager.find(OperaLetteraria.class, isbn);
+		System.out.println();
+		System.out.println("Ricerca elemento per ISBN con successiva eliminazione:");
 		if (operaTrovata != null) {
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
 			entityManager.remove(operaTrovata);
 			transaction.commit();
-			System.out.println("Elemento con ISBN " + isbn + " eliminato con successo!");
+			log.info("Elemento con ISBN " + isbn + " eliminato con successo!");
 		} else {
-			System.out.println("Ci dispiace ma l'elemento con ISBN " + isbn + " non è stato trovato");
+			log.info("Ci dispiace ma non è stato possibile trovare l'elemento con ISBN " + isbn);
 		}
 	}
 
