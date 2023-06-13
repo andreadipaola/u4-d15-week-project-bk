@@ -4,7 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import entities.Utente;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class UtenteDao {
 	private final EntityManager entityManager;
 
@@ -17,6 +19,6 @@ public class UtenteDao {
 		transaction.begin();
 		entityManager.persist(utente);
 		transaction.commit();
-		System.out.println("Utente salvato correttamente!");
+		log.info("Utente salvato correttamente!");
 	}
 }
