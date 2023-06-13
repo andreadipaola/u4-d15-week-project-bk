@@ -44,10 +44,11 @@ public abstract class OperaLetteraria {
 	@JoinColumn(name = "id_prestito")
 	private Prestito prestito;
 
-	public OperaLetteraria(String titolo, int annoPubblicazione, int numeroPagine) {
+	public OperaLetteraria(String titolo, int annoPubblicazione, int numeroPagine, Prestito prestito) {
 		this.titolo = titolo;
 		this.annoPubblicazione = annoPubblicazione;
 		this.numeroPagine = numeroPagine;
+		this.prestito = prestito;
 	}
 
 //	@Override

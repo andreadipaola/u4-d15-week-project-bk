@@ -1,10 +1,9 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,16 +44,17 @@ public class Prestito {
 	@JoinColumn(name = "id_utente")
 	private Utente utente;
 
-	@OneToMany(mappedBy = "prestito", cascade = CascadeType.ALL)
-	private Set<OperaLetteraria> opereLetterarie;
+//	@OneToMany(mappedBy = "prestito", cascade = CascadeType.ALL)/
+	@OneToMany(mappedBy = "prestito")
+	private List<OperaLetteraria> opereLetterarie;
 
-	public Prestito(Utente utente, Set<OperaLetteraria> opereLetterarie, LocalDate dataInizioPrestito,
-			LocalDate dataRestituzioneEffettiva) {
-		this.utente = utente;
-		this.opereLetterarie = opereLetterarie;
+	public Prestito(LocalDate dataInizioPrestito, LocalDate dataRestituzioneEffettiva, Utente utente,
+			List<OperaLetteraria> opereLetterarie) {
 		this.dataInizioPrestito = dataInizioPrestito;
 		this.dataRestituzionePrevista = dataInizioPrestito.plusDays(30);
 		this.dataRestituzioneEffettiva = dataRestituzioneEffettiva;
+		this.utente = utente;
+		this.opereLetterarie = opereLetterarie;
 	}
 
 	@Override
