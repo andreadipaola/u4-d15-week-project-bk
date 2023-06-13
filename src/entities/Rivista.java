@@ -19,8 +19,8 @@ public class Rivista extends OperaLetteraria {
 	@Enumerated(EnumType.STRING)
 	private Periodicita periodicita;
 
-	public Rivista(String titolo, int annoPubblicazione, int numeroPagine, Periodicita periodicita) {
-		super(titolo, annoPubblicazione, numeroPagine);
+	public Rivista(String titolo, int annoPubblicazione, int numeroPagine, Periodicita periodicita, Prestito prestito) {
+		super(titolo, annoPubblicazione, numeroPagine, prestito);
 		this.periodicita = periodicita;
 	}
 
@@ -28,7 +28,7 @@ public class Rivista extends OperaLetteraria {
 	public String toString() {
 		return "[RIVISTA] ISBN: " + getIsbn() + ", Titolo: " + getTitolo() + ", Anno di Pubblicazione: "
 				+ getAnnoPubblicazione() + ", Numero di Pagine = " + getNumeroPagine() + ", periodicità = "
-				+ periodicita + "(RIVISTA";
+				+ periodicita;
 	}
 
 }

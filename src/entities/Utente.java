@@ -1,10 +1,9 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,13 +32,15 @@ public class Utente {
 	@Column(name = "data_di_nascita")
 	private LocalDate dataNascita;
 
-	@OneToMany(mappedBy = "utente", cascade = CascadeType.ALL)
-	private Set<Prestito> prestiti;
+//	@OneToMany(mappedBy = "utente", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "utente")
+	private List<Prestito> prestiti;
 
-	public Utente(String nome, String cognome, LocalDate dataNascita) {
+	public Utente(String nome, String cognome, LocalDate dataNascita, List<Prestito> prestiti) {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.dataNascita = dataNascita;
+		this.prestiti = prestiti;
 	}
 
 	@Override

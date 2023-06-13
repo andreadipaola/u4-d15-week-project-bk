@@ -17,8 +17,9 @@ public class Libro extends OperaLetteraria {
 	private String autore;
 	private String genere;
 
-	public Libro(String titolo, int annoPubblicazione, int numeroPagine, String autore, String genere) {
-		super(titolo, annoPubblicazione, numeroPagine);
+	public Libro(String titolo, int annoPubblicazione, int numeroPagine, String autore, String genere,
+			Prestito prestito) {
+		super(titolo, annoPubblicazione, numeroPagine, prestito);
 		this.autore = autore;
 		this.genere = genere;
 	}

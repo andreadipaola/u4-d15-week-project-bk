@@ -34,7 +34,7 @@ public class PrestitoDao {
 
 			List<Prestito> risultato = query.getResultList();
 
-			System.out.println("Ricerca elementi per tessera utente:");
+			System.out.println("Ricerca prestiti per tessera utente:");
 
 			if (risultato.isEmpty()) {
 				log.error("Ci dispiace non abbiamo trovato alcun prestito associato a questo numero di tessera.");
