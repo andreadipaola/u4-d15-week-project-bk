@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "prestiti")
 @Getter
 @NoArgsConstructor
-@NamedQuery(name = "cercaPrestitiDaUtente", query = "SELECT p FROM Prestito p WHERE p.utente.numeroTessera = :utente AND p.dataRestituzioneEffettiva IS NULL")
+@NamedQuery(name = "cercaPrestitiDaUtente", query = "SELECT p FROM Prestito p WHERE p.utente.numeroTessera = :numeroTessera AND p.dataRestituzioneEffettiva IS NULL")
 //@NamedQuery(name = "cercaPrestitiDaUtente", query = "SELECT p FROM Prestito p WHERE p.utente.numeroTessera = :utente")
 @NamedQuery(name = "cercaPrestitiScaduti", query = "SELECT p FROM Prestito p WHERE p.dataRestituzioneEffettiva IS NULL AND p.dataRestituzionePrevista < CURRENT_DATE")
 public class Prestito {
@@ -59,9 +59,10 @@ public class Prestito {
 
 	@Override
 	public String toString() {
-		return "[PRESTITO] Id: " + idPrestito + ", Tessera utente: " + utente.getNumeroTessera() + ", Data prelievo: "
+		return "\n[PRESTITO] Id: " + idPrestito + ", Tessera utente: " + utente.getNumeroTessera() + ", Data prelievo: "
 				+ dataInizioPrestito + ", Data restituzione privista: " + dataRestituzionePrevista
-				+ ", Data consegna effettiva: " + dataRestituzioneEffettiva;
+				+ ", Data consegna effettiva: " + dataRestituzioneEffettiva + ".\nOpere prese in prestito:\n"
+				+ opereLetterarie;
 	}
 
 }

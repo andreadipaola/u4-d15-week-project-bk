@@ -30,16 +30,17 @@ public class PrestitoDao {
 	public void ottieniPrestitiDaUtente(UUID numeroTessera) {
 		try {
 			TypedQuery<Prestito> query = entityManager.createNamedQuery("cercaPrestitiDaUtente", Prestito.class);
-			query.setParameter("utente", numeroTessera);
+			query.setParameter("numeroTessera", numeroTessera);
 
-			List<Prestito> risultato = query.getResultList();
+			List<Prestito> prestiti = query.getResultList();
 
+			System.out.println();
 			System.out.println("Ricerca prestiti per tessera utente:");
 
-			if (risultato.isEmpty()) {
+			if (prestiti.isEmpty()) {
 				log.error("Ci dispiace non abbiamo trovato alcun prestito associato a questo numero di tessera.");
 			} else {
-				for (Prestito prestito : risultato) {
+				for (Prestito prestito : prestiti) {
 					log.info(prestito.toString());
 				}
 			}
